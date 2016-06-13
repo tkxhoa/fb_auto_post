@@ -1,0 +1,45 @@
+<?php
+require_once __DIR__ . '/fb_config.php';
+
+# login.php
+
+define('FB_FANPAGE_ID', '850962965008426');
+
+
+$post_url = 'https://graph.facebook.com/'. FB_FANPAGE_ID . '/feed';
+
+
+$data['picture'] = "https://images-na.ssl-images-amazon.com/images/I/51m%2BFFxEtAL._SY355_.jpg";
+$data['link'] = "https://images-na.ssl-images-amazon.com/images/I/51m%2BFFxEtAL._SY355_.jpg";
+$data['message'] = "Test FB API - POST Fanpage Feed";
+$data['caption'] = "Caption";
+$data['description'] = "Description";
+$data['access_token'] = $_SESSION['facebook_access_token'];
+
+//$data['admin_creator'] = (object) ['id' => '100004158638962', 'name' => ''];
+
+$creator = new stdClass();
+$creator->id = '100004158638962';
+$creator->name = 'Tran Xuan Khoa';
+
+$data['admin_creator'] = $creator;
+
+
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, $post_url);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+try {
+  $return = curl_exec($ch);
+
+  var_dump($return);
+} catch (Exception $e) {
+  echo $e->getMessage();
+  exit;
+}
+
+curl_close($ch);
+
+?>
